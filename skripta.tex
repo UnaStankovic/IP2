@@ -123,9 +123,9 @@ idf(t) = \log(\frac{1 + n_d}{1 + df(d,t)}) +1
 \end{equation}
 gde je $n_d$ ukupni broj dokumenata,$df(d,t)$ je broj dokumenata koji sadrže termin $t$. Rezultujući tfidf vektori se potom normalizuju Euklidskom normom. Glavni cilj korišćenja tf-idf umesto sirovih učestalosti pojavljivanja tokena u dokumentu je skaliranje uticaja tokena koji se jako često pojavljuju u korpusu i time su empirijski manje informativni.\\
 Da bismo matricu učestalosti pojavljivanja (engl. \em{count matrix}) transformisali u normalizovanu $tf$ ili $tfidf$ reprezentaciju koristimo\\ 
-$sklearn.feature\_extraction.text.TfidfTransformer$
+$sklearn.feature\_extraction.text.TfidfTransformer$.
 Kako ne bismo svaki put radili $CountVectorizer$, pa potom $TfidfTransformer$, postoji ugrađena bibliotečka podrška, u vidu:\\
-$sklearn.feature_extraction.text.TfidfVectorizer$
+$sklearn.feature\_extraction.text.TfidfVectorizer$
 koji konvertuje kolekciju sirovih dokumenata u matricu TF-IDF objekata.\\\\
 
 \begin{figure}[t]
@@ -133,8 +133,6 @@ koji konvertuje kolekciju sirovih dokumenata u matricu TF-IDF objekata.\\\\
 \centering
 \caption{Prikaz odnosa učestalosti pojavljivanja reči i njihovog značaja.}
 \end{figure}
-\newpage
-\begin{primer}
 
 Pošto nam je cilj da se bavimo obradom prirodnih jezika, za tako nešto možemo iskoristiti $nltk$ (engl. \em{The Natural Language Toolkit}). On predstavlja skup biblioteka i programa za simboličko i statističko procesiranje prirodnih jezika, konkretno engleskog jezika. Predstavlja vodeću platformu za izradu $Python$ programa za rad sa prirodnim jezikom, pa tako sadrži skup biblioteka za procesiranje teksta pri klasifikaciji, tokenizaciju, izvlačenje korena reči(engl. \em{stemming}), tagovanje, parsiranje itd. Stemeri (engl. \em{stemmers}) uklanjaju morfološke prefikse, sufikse i infikse iz reči, kako bi ostala samo srž. Postoji više različitih vrsta stemera, od kojih će prvi biti predstavljen $SnowballStemmer$, koji podržava naredne jezike: danski, holandski, engleski, finski, francuski, nemački, mađarski, italijanski, norverški, portugalski, rumunski, ruski, španski i švedski.\\\\
 Kada hoćemo da vršimo klasifikaciju, to možemo učiniti pomoću više različitih klasifikatora koje nam nudi $sklearn$, kao što su:
@@ -150,8 +148,15 @@ Kada hoćemo da vršimo klasifikaciju, to možemo učiniti pomoću više različ
 \caption{Prikaz K-najbližih suseda.}
 \end{figure}
 \newpage
+\subsubsection{Predikcija kategorije teksta}
 \begin{primer}
-Naredni primer vrši klasifikaciju novinskih članaka. Najpre se učitavaju podaci iz fajla $articles.csv$, u kome su podaci smešteni u obliku $kategorija, tekst$. Kolone koje čine fajl smeštamo u dve promenljive redom, $y$ i $texts$. Nakon toga, vrši se inicijalizacija vektorizatora za kreiranje TF-IDF matrice.
+Naredni primer vrši predikciju kategorije teksta. Najpre se učitavaju podaci iz fajla $articles.csv$, u kome su podaci smešteni u obliku $kategorija, tekst$. Kolone koje čine fajl smeštamo u dve promenljive redom, $y$ i $texts$. Nakon toga, vrši se inicijalizacija vektorizatora za kreiranje TF-IDF matrice. Potom, primenjuje se neki od 3 klasifikatora:
+\begin{itemize}
+\item KNeighborsClassifier
+\item SGDClassifier
+\item MultinomialClassifier
+\end{itemize}
+Nakon fitovanja klasifikacionog modela, računarju se preciznosti na trening i test skupu, a potom se učitava test model i vrši se predikcija kategorije teksta. 
 \end{primer}
 \inputminted{python}{Codes/1/classifier.py}
 Rezultat izvršavanja ovog programa je oblika:
@@ -168,7 +173,7 @@ $LSA$ predstavlja način za particionisanje teksta korišćenjem statističkih m
 SVD dekompozicija razbija bilo koju matricu $A$ na $A=U*S*V'$. Ako bismo bliže pogledali matricu $S$, videli bismo da je $S$ matrica forme, takve, da se sastoji od matrice $D$, koja na dijagonali sadrži sve $\sigma$, koje predstavljaju singularne vrednosti. Broj ovih singularnih vrednosti nam govori o rangu matrice $A$. Možemo pronaći aproksimaciju redukovanog ranga (engl. \em{truncated SVD} ili \em{LSA}) za $A$ tako što postavimo sve, osim prvih $k$ najvećih singularnih vrednosti na nulu, a potom koristimo samo prvih $k$ kolona matrica $U$  $V$. Ovaj postupak vršimo kako bismo izvršili redukciju dimenzionalnosti. Suprotno PCA, ovaj estimator ne centrira podatke pre izračunavanja singularne dekompozicije, što mu omogućava da radi efikasno sa retkim matricama (dostupnim kroz modul $scipy.sparse$). Konkretno, truncated SVD radi nad matricama sa brojevima termova (engl. \em{term count}) ili nad $tfidf$ matricama. U kontekstu ovih drugih, postupak je poznat kao latentna semantička analiza (engl. \em{latent semantic analysis-LSA}).\\\\
 \begin{primer}
 Ovaj primer vrši klasifikaciju novinskih članaka. Najpre se učitavaju podaci iz fajla $articles.csv$, u kome su podaci smešteni u obliku $kategorija, tekst$. Kolone koje čine fajl smeštamo u dve promenljive redom, $y$ i $texts$. Nakon toga, vrši se inicijalizacija vektorizatora za kreiranje TF-IDF matrice. Potom se vrši LSA.
-\end{primer}
+
 \inputminted{python}{Codes/2/0-lsa.py}
 Rezultat izvršavanja ovog programa predstavlja skup reči sa najvećim težinama po komponentama oblika:
 \begin{lstlisting}
@@ -187,9 +192,8 @@ Component 182
 \end{lstlisting}
 \end{primer}
 
- 
-\begin{primer}
-Da bismo prikupili neke informacije sa veb stranica,a želimo to da uradimo na jednostavan način, potreban nam je program koji bi automatski izdvojio informacije od interesa i izvršio njihovo izdvajanje za nas. Ovakav program naziva se skrejper (engl. \em{scraper}). On obilazi određenu vezu (ili, još češće, više veza na stranicama) i izdvaja željene informacije. Takav jedan program bio bi nam, na primer, potreban kako bismo popunili neki $.csv$ fajl u koji bismo mogli da smestimo neke novinske članke. Da bismo tako nešto postigli, moramo za svaku $.html$ stranicu koju posetimo: da izdvojimo relevantne informacije i da nađemo linkove ka ostalim. Kako bismo to uradili moramo koristiti regularne izraze i $re$ biblioteku koja nam omogućava rad sa njima. Da bismo uopšte mogli da $"$dovučemo$"$ stranice moramo koristiti $urllib.request$. \\
+\subsubsection{Web Scraping} 
+Da bismo prikupili neke informacije sa veb stranica,a želimo to da uradimo na jednostavan način, potreban nam je program koji bi automatski izdvojio informacije od interesa i izvršio to izdvajanje za nas. Ovakav program naziva se skrejper (engl. \em{scraper}). On obilazi određenu vezu (ili, još češće, više veza na stranicama) i izdvaja željene informacije. Takav jedan program bio bi nam, na primer, potreban kako bismo popunili neki $.csv$ fajl u koji bismo mogli da smestimo neke novinske članke. Da bismo tako nešto postigli, moramo za svaku $.html$ stranicu koju posetimo: da izdvojimo relevantne informacije i da nađemo linkove ka ostalim. Kako bismo to uradili moramo koristiti regularne izraze i $re$ biblioteku koja nam omogućava rad sa njima. Da bismo uopšte mogli da $"$dovučemo$"$ stranice moramo koristiti $urllib.request$. \\
 Urllib je paket koji sadrži nekoliko modula za rad sa URL-ovima:
 \begin{itemize}
 \item $urllib.request$ - za otvaranje i čitanje URL-ova,
@@ -198,6 +202,8 @@ Urllib je paket koji sadrži nekoliko modula za rad sa URL-ovima:
 \item $urllib.robotparser$ - za parsiranje $robots.txt$ fajlova.
 \end{itemize}
 Osim toga, u slučaju, da je neki sajt na ćirilici, a 
+\begin{primer}
+Naredni primer upravo vrši opisani postupak.
 
 
 \inputminted{python}{Codes/2/1-scraper.py}
@@ -252,9 +258,18 @@ clanak:
 \end{lstlisting}
 \end{primer}
 
-\begin{primer}
-Naredni primer je tzv. PageRank algoritam. PageRank je algoritam originalno objavljen od strane ljudi koji su učestvovali u kreiranju Google-a, Sergeja Brina i Lari Pejdža. PageRank se smatra odgovornim za rani uspeh Google-a, funkcioniše tako što obezbeđuje globalno rangiranje čvorova u grafu. Za pretraživače obezbeđuje rangiranje stranica nezavisno od upita. 
-Glavna pretpostvka ovog algoritma je da je svaka veza od stranice $a$ ka stranici $b$ glas od stranice $a$ za stranicu $b$. Bitno je naglasiti da nije svaki glas jednake težine. Težine dodeljuje PageRank algoritam na osnovu početnog čvora.  
+\newpage
+\subsubsection{PageRank algoritam}
+Naredni primer odnosi se na tzv. PageRank algoritam, odnosno, algoritam za rangiranje stranica. Ovaj algoritam je originalno objavljen od strane ljudi koji su učestvovali u kreiranju Google-a, Sergeja Brina i Lari Pejdža i smatra se odgovornim za njegov rani uspeh. Funkcioniše tako što stranice posmatra kao čvorove u grafu, a veze između stranica kao grane i potom obezbeđuje globalno rangiranje stranica na webu (čvorova u grafu). Za pretraživače obezbeđuje rangiranje stranica nezavisno od upita. Glavna pretpostvka ovog algoritma je da je svaka veza od stranice $a$ ka stranici $b$ glas od stranice $a$ za stranicu $b$. Bitno je naglasiti da nije svaki glas jednake težine. Težine dodeljuje PageRank algoritam na osnovu početnog čvora. Posmatrajmo primer sa slike \ref:pr1.
+
+\begin{figure}[t]
+\includegraphics[width=8cm]{Pictures/pr1.png}
+\centering
+\caption{Prikaz grafa. A, B, C i D predstavljaju stranice.}
+\end{figure}
+
+ 
+\begin{primer} 
 \end{primer}
 
 
