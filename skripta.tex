@@ -8,7 +8,8 @@
 \usepackage[T2A]{fontenc} % enable Cyrillic fonts
 \usepackage[utf8]{inputenc} % make weird characters work
 \usepackage{graphicx}
-
+\usepackage{mwe}    % loads »blindtext« and »graphicx«
+\usepackage{subfig}
 \usepackage[english,serbian]{babel}
 %\usepackage[english,serbianc]{babel} %ukljuciti babel sa ovim opcijama, umesto gornjim, ukoliko se koristi cirilica
 \usepackage{listings}
@@ -258,18 +259,127 @@ clanak:
 \end{lstlisting}
 \end{primer}
 
+
+\begin{primer}
+Nakon što smo prikupili neke podatke sa stranica, želimo sada i na neki način da te podatke analiziramo. U ovom primeru želimo da vršimo pretragu stranica na osnovu traženih pojmova, koje unosimo u vidu $query\_string$. 
+\inputminted{python}{Codes/2/2-analisys.py}
+
+Izlaz iz programa predstavlja prvih 5 najbitnijih stranica za zadate pojmove. 
+\begin{lstlisting}
+http://www.politika.rs/scc/clanak/414025/Spanske-firme-sele-centrale-iz-regiona-u-Beograd
+http://www.politika.rs/scc/clanak/413970/Linta-Da-srpske-zrtve-u-Hrvatskoj-i-BiH-docekaju-pravdu
+http://www.politika.rs/scc/clanak/413321/Skot-Kosovo-je-suverena-zemlja
+http://www.politika.rs/scc/clanak/413988/Bramerc-o-predstojecem-izvestaju-Mladicu-radikalima
+http://www.politika.rs/scc/clanak/413777/Kosovo-cas-anatomije
+\end{lstlisting}
+\end{primer}
 \newpage
 \subsubsection{PageRank algoritam}
-Naredni primer odnosi se na tzv. PageRank algoritam, odnosno, algoritam za rangiranje stranica. Ovaj algoritam je originalno objavljen od strane ljudi koji su učestvovali u kreiranju Google-a, Sergeja Brina i Lari Pejdža i smatra se odgovornim za njegov rani uspeh. Funkcioniše tako što stranice posmatra kao čvorove u grafu, a veze između stranica kao grane i potom obezbeđuje globalno rangiranje stranica na webu (čvorova u grafu). Za pretraživače obezbeđuje rangiranje stranica nezavisno od upita. Glavna pretpostvka ovog algoritma je da je svaka veza od stranice $a$ ka stranici $b$ glas od stranice $a$ za stranicu $b$. Bitno je naglasiti da nije svaki glas jednake težine. Težine dodeljuje PageRank algoritam na osnovu početnog čvora. Posmatrajmo primer sa slike \ref:pr1.
-
+Naredni primer odnosi se na tzv. PageRank algoritam, odnosno, algoritam za rangiranje stranica. Ovaj algoritam je originalno objavljen od strane ljudi koji su učestvovali u kreiranju Google-a, Sergeja Brina i Lari Pejdža i smatra se odgovornim za njegov rani uspeh. Funkcioniše tako što stranice posmatra kao čvorove u grafu, a veze između stranica kao grane i potom obezbeđuje globalno rangiranje stranica na webu (čvorova u grafu). Za pretraživače obezbeđuje rangiranje stranica nezavisno od upita. Glavna pretpostvka ovog algoritma je da je svaka veza od stranice $a$ ka stranici $b$ glas od stranice $a$ za stranicu $b$. Bitno je naglasiti da nije svaki glas jednake težine. Težine dodeljuje PageRank algoritam na osnovu početnog čvora. Iterativna formula za PageRank je sledeća:
+\begin{equation}
+PR_{i+1}(P_i) = \sum\nolimits_{P_j}\frac{PR_i(P_j)}{C(P_j)}
+\end{equation}
+$PR_{i+1}$ predstavlja PageRank neke stranice $P_i$ u narednoj iteraciji i računa se kao suma količnika PageRank-ova stranica koje pokazuju na tu stranicu u prethodnim iteracijama i broja $"$odlaznih$"$ stranica. Da bismo bolje razumeli šta nam zapravo navedena formula govori posmatrajmo sliku \ref{fig:pr1}. 
 \begin{figure}[t]
-\includegraphics[width=8cm]{Pictures/pr1.png}
+\includegraphics[width=6cm]{Pictures/pr1.png}
 \centering
+\label{fig:pr1}
 \caption{Prikaz grafa. A, B, C i D predstavljaju stranice.}
 \end{figure}
 
- 
+
+Pošto je PageRank iterativan algoritam, u prvoj iteraciji rangove svih stranica postavljamo na $\frac{1}{ukupanbrojstranica}$, u primeru sa slike to bi bilo $\frac{1}{4}$. 
+\begin{itemize}
+\item $PR_0(A) = \frac{1}{4}$
+\item $PR_0(B) = \frac{1}{4}$
+\item $PR_0(C) = \frac{1}{4}$
+\item $PR_0(D) = \frac{1}{4}$
+\end{itemize}
+Potom u prvoj iteraciji (prikazanoj na slikama \ref{fig:PR1}), posmatramo nultu i ukupan broj strana na koje pokazuje svaki od čvorova koji pokazuju na stranicu koju analiziramo.
+
+\begin{figure}[!ht]
+	\subfloat[Stranica C ima vezu (pokazuje) na stranicu A. \label{subfig-1:pr2}]
+	{%
+		\includegraphics[width=0.44\textwidth]{Pictures/pr2.png}
+     }
+	\hfill
+	\subfloat[Stranice A i C imaju vezu (pokazuju) na stranicu B. \label{subfig-1:pr3}]
+	{%
+		\includegraphics[width=0.40\textwidth]{Pictures/pr3.png}
+     }
+	\hfill
+	\subfloat[Stranice A i D imaju vezu (pokazuju) na stranicu C. \label{subfig-1:pr4}]
+	{	%
+		\includegraphics[width=0.42\textwidth]{Pictures/pr4.png}
+    }
+	\hfill
+	\subfloat[Stranice B i C imaju vezu (pokazuju) na stranicu D. \label{subfig-1:pr5}]
+	{%
+		\includegraphics[width=0.41\textwidth]{Pictures/pr5.png}
+    }
+	\hfill
+    \caption{PageRank prikaz prve iteracije.}
+    \label{fig:PR1}
+\end{figure}
+
+Na primeru, ako posmatramo čvor $A$, na njega pokazuje samo čvor $C$, koji pokazuje na čvorove $A$, $B$ i $D$. To znači da iz prethodne iteracije imamo $\frac{1}{4}$, a potom sve to delimo sa $3$ (broj strana na koje se pokazuje sa strane $C$). Analogno, važi za ostale čvorove. Dakle, dobijamo sledeće formule:
+\begin{itemize}
+\item $PR_1(A) = \frac{\frac{1}{4}}{3} = \frac{1}{12}$
+\item $PR_1(B) = \frac{\frac{1}{4}}{2} + \frac{\frac{1}{4}}{3} = \frac{2.5}{12}$
+\item $PR_1(C) = \frac{\frac{1}{4}}{2} + \frac{\frac{1}{4}}{1} =\frac{4.5}{12}$
+\item $PR_1(D) = \frac{\frac{1}{4}}{1} + \frac{\frac{1}{4}}{3} = \frac{4}{12}$
+\end{itemize}
+
+U narednoj iteraciji, ponovo vršimo isti postupak:
+\begin{itemize}
+\item $PR_2(A) = \frac{\frac{4.5}{12}}{3} = \frac{1.5}{12}$
+\item $PR_2(B) = \frac{\frac{1}{12}}{2} + \frac{\frac{4.5}{12}}{3} = \frac{2}{12}$
+\item $PR_2(C) = \frac{\frac{1}{12}}{2} + \frac{\frac{4}{12}}{1} = \frac{4.5}{12}$
+\item $PR_2(D) = \frac{\frac{2.5}{12}}{1} + \frac{\frac{4.5}{12}}{3} = \frac{4}{12}$
+\end{itemize}
+Na kraju, dobijamo da je page rank:
+\begin{itemize}
+\item $PR(A) = 1$
+\item $PR(B) = 2$
+\item $PR(C) = 4$
+\item $PR(D) = 3$
+\end{itemize}
+Primetimo da se u svakoj iteraciji sume svih rangova sumiraju na 1. Što je viši broj u imeniocu razlomka, to je ta stranica važnija. Tako se uviđa da je na primeru stranica $C$ najvažnija. Iza nje sledi stranica $D$, ako bismo pogledali sliku, možda nam na prvi pogled ne bi bilo odmah jasno zašto je stranica $D$ druga najvažnija. Ovaj događaj je posledica toga što se važnost stranice određuje u odnosu na broj drugih važnih stranica koje ukazuju na nju. Tako je $D$, važnija od stranica $A$ i $B$.\\\\
+\subparagraph{Matrični pristup}
+Osim iterativnog pristupa za PageRank algoritam možemo koristiti i matrični pristup. Redom su $A$, $B$, $C$ i $D$ vrste i kolone matrice. Po kolonama, redom, smeštamo moguće verovatnoće izbora određenog čvora dostupnog iz tekućeg. Na primer, iz čvora $A$ možemo doći do čvorova $B$ i $C$, ali ne možemo do $D$, tako da u koloni $A$ na pozicijama $B$ i $C$ upisujemo po jednu polovinu. Iz $B$, možemo doći samo do $D$, itd. Uočimo, da je ponovo suma po kolonama jednaka jedinici. Matrica izgleda na sledeći način:
+\[
+\begin{bmatrix}
+    0           & 0 & \frac{1}{3} & 0\\
+    \frac{1}{2} & 0 & \frac{1}{3} & 0\\
+    \frac{1}{2} & 0 & 0           & 1\\
+    0           & 1 & \frac{1}{3} & 0
+\end{bmatrix}
+\]
+
+Ovakvu matricu nazivamo $"$stohastička$"$ matrica, obeležavamo je sa $H$ i množimo sa nekim vektorom $v$, dimenzija $1 \times n$, gde $n$ predstavlja broj čvorova u grafu, odnosno, broj stranica. Na osnovu navedenog možemo izvesti formulu:
+\begin{equation}
+P_{i+1} = Hv
+\end{equation}
+Vektor $v$ je vrednost PageRank-a u prethodnim iteracijama, pa prethodnu formulu možemo predstaviti kao:
+\begin{equation}
+P_{i+1} = HP_i
+\end{equation}
+Naredna iteracija vektora $v$ je:
+\begin{equation}
+v_2 = Hv
+\end{equation}
+\begin{equation}
+v_3 = Hv_2 = H(Hv) = H^2v
+\end{equation}
+Ako bismo nastavili da iteriramo, svaki put dodavajući $H$, posle nekog vremena došli bismo do stanja ekvilibrijuma, koje označava da ne treba dalje da iteriramo, jer smo našli vrednosti koje smo tražili. U vektoru $v$ nam se nalaze rangovi stranica. Ovaj metod naziva se $"$power method$"$.\\
+Potencijalni problemi koji se mogu javiti prilikom primene PageRank algoritma:
+\begin{itemize}
+\item $"$viseći$"$ čvorovi - algoritam neće raditi u situaciji kada imamo čvorove na koje niko ne pokazuje,
+\item ako graf sadrži komponente koje nisu povezane.
+\end{itemize} 
 \begin{primer} 
+Ovaj primer upravo implementira PageRank algoritam. Izlaz ovog algoritma neće biti predstavljen.
+\inputminted{python}{Codes/2/3-pagerank.py}
 \end{primer}
 
 
