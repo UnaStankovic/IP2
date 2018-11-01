@@ -86,7 +86,7 @@ ________________________________________________________________________
 \end{lstlisting}
 
 
-\subsection{Istraživanje Veba - Web Mining}
+\section{Istraživanje Veba - Web Mining}
 \label{sec:veb}
 Kada posmatramo distribuirani sistem informacija, vidimo da su dokumenti i objekti najčešće povezani kako bi se omogućio interaktivni pristup. Glavni primer distribuiranog sistema je Veb, gde korisnici, u potrazi za informacijama, $"$putuju$"$ od objekta do objekta uz pomoć hiperlinkova i \texttt{URL} adresa. Veb konstantno raste i svaki dan se dodaje po nekoliko miliona stranica. Sa ovakvim, neprekidnim, rastom dostupnih stranica i podataka uviđa se da dobijanje informacija iz takvih izvora postaje sve teže i teže. Kao jedan od glavnih problema pri analizi Veb stranica javlja se nedostatak strukture. Pod $"$rudarenjem (istraživanjem) Veba$"$\footnote{engl. web mining} podrazumevamo korišćenje tehnika za $"$rudarenje (istraživanje) podataka$"$\footnote{engl. data mining} kako bi se automatski otkrile i izvlačile informacije sa Veb dokumenata i servisa. Web mining možemo podeliti na četiri glavne celine:
 \begin{enumerate}
@@ -107,7 +107,7 @@ Kako bi se kreirao fokusirani crawler, klasifikator se obično trenira na skupu 
 
 U \texttt{Pythonu} postoji modul \texttt{sklearn.feature\_extraction} koji služi za izvlačenje objekata\footnote{engl. features} iz skupova podataka koji sadrže tekst ili slike, u formatu koji je podržan od strane algoritama mašinskog učenja. 
 
-\subsubsection{Izvlačenje teksta}
+\subsection{Izvlačenje teksta}
 
 Analiza teksta je jedna od važnih primena algoritama mašinskog učenja. Međutim, sirovi podaci\footnote{engl. raw data} predstavljaju prepreku utoliko što ih algoritmima ne možemo dati direktno, već nam je potrebna neka njihova numerička reprezentacija uz pomoć vektora fiksirane dužine. Kako bi se ovaj problem rešio \texttt{scikit\-learn} nudi nekoliko načina da se iz tekstualnog sadržaja izvuku numerički podaci, princip koji se koristi je sledeći:
 \begin{itemize}
@@ -156,7 +156,7 @@ Kada hoćemo da vršimo klasifikaciju, to možemo učiniti pomoću više različ
 \caption{Prikaz K-najbližih suseda.}
 \end{figure}
 \newpage
-\subsubsection{Predikcija kategorije teksta}
+\subsection{Predikcija kategorije teksta}
 \begin{primer}
 Naredni primer vrši predikciju kategorije teksta. Najpre se učitavaju podaci iz fajla \texttt{articles.csv}, u kome su podaci smešteni u obliku $kategorija, tekst$. Kolone koje čine fajl smeštamo u dve promenljive redom, $y$ i $texts$. Nakon toga, vrši se inicijalizacija vektorizatora za kreiranje TF-IDF matrice. Potom, primenjuje se neki od 3 klasifikatora:
 \begin{itemize}
@@ -176,7 +176,7 @@ Test acc: 0.968562874251497
 [[0.38475301 0.09423106 0.28803524 0.11219421 0.12078647]]
 \end{lstlisting}
 \newpage
-\subsubsection{Latentna semantička analiza}
+\subsection{Latentna semantička analiza}
 \textbf{Latentna semantička analiza}\footnote{engl. LSA - latent semantic analysis-LSA} predstavlja način za particionisanje teksta korišćenjem statističkih modela upotrebe reči koji je sličan dekompoziciji sopstvenih vektora i analizi. Umesto da se samo fokusiramo na površne objekte kao što je učestalost reči, ovaj pristup obezbeđuje kvanitativnu meru semantičkih sličnosti među dokumentima baziranom na kontekstu reči. Dve glavne mane su sinonimija i polisemija. Sinonimija se odnosi na različite reči istog ili sličnog značenja. Sa druge strane, polisemija se odnosi na reči koje imaju više različitih značenja. \texttt{LSA} pokušava da razreši ovaj tip problema, bez pomoći rečnika i sredstava na obradu prirodnih jezika, već korišćenjem matematičkih uzoraka koji postoje unutar podataka. To se postiže smanjenjem dimenzije koja se koristi da se dokument predstavi korišćenjem matematičke matrične operacije koja se naziva singularna dekompozicija\footnote{engl. SVD - Singular Value Decomposition}.\\
 
 \textbf{Singularna dekompozicija} razbija bilo koju matricu $A$ na $A=U*S*V'$. Ako bismo bliže pogledali matricu $S$, videli bismo da je $S$ matrica forme, takve, da se sastoji od matrice $D$, koja na dijagonali sadrži sve $\sigma$, koje predstavljaju singularne vrednosti. Broj ovih singularnih vrednosti nam govori o rangu matrice $A$. Možemo pronaći aproksimaciju redukovanog ranga\footnote{engl. \em{truncated SVD} ili \em{LSA}} za $A$ tako što postavimo sve, osim prvih $k$ najvećih singularnih vrednosti na nulu, a potom koristimo samo prvih $k$ kolona matrica $U$ i $V$. Ovaj postupak vršimo kako bismo izvršili \textbf{redukciju dimenzionalnosti}. Suprotno PCA\footnote{engl. PCA - Principal Component Analysis}, ovaj estimator ne centrira podatke pre izračunavanja singularne dekompozicije, što mu omogućava da radi efikasno sa retkim matricama\footnote{Retke matrice su one matrice koje sadrže veliki broj nula.} (dostupnim kroz modul \texttt{scipy.sparse}). Konkretno, truncated SVD radi nad matricama sa brojevima termova\footnote{engl. term count} ili nad $tfidf$ matricama. U kontekstu ovih drugih, postupak je poznat kao latentna semantička analiza.\\
@@ -184,7 +184,7 @@ Test acc: 0.968562874251497
 \begin{figure}[t]
 \includegraphics[width=6cm]{Pictures/svd-matrices.png}
 \centering
-\label{fig:pr1}
+\label{fig:svd}
 \caption{Prikaz dekompozicije matrice.}
 \end{figure}
 
@@ -209,7 +209,7 @@ Component 182
 \end{lstlisting}
 \end{primer}
 
-\subsubsection{Web Scraping} 
+\subsection{Web Scraping} 
 Da bismo prikupili neke informacije sa veb stranica, a želimo to da uradimo na jednostavan način, potreban nam je program koji bi automatski izdvojio informacije od interesa i izvršio to izdvajanje za nas. Ovakav program naziva se skrejper\footnote{engl. scraper}. On obilazi određenu vezu (ili, još češće, više veza na stranicama) i izdvaja željene informacije. Takav jedan program bio bi nam, na primer, potreban kako bismo popunili neki $.csv$ fajl u koji bismo mogli da smestimo neke novinske članke. Da bismo tako nešto postigli, moramo za svaku $.html$ stranicu koju posetimo:
 \begin{enumerate}
 \item da izdvojimo relevantne informacije i
@@ -296,7 +296,7 @@ http://www.politika.rs/scc/clanak/413777/Kosovo-cas-anatomije
 \end{lstlisting}
 \end{primer}
 \newpage
-\subsubsection{PageRank algoritam}
+\subsection{PageRank algoritam}
 Naredni primer odnosi se na tzv. PageRank algoritam, odnosno, algoritam za rangiranje stranica. Ovaj algoritam je originalno objavljen od strane ljudi koji su učestvovali u kreiranju Google-a, Sergeja Brina i Lari Pejdža i smatra se odgovornim za njegov rani uspeh. Funkcioniše tako što stranice posmatra kao čvorove u grafu, a veze između stranica kao grane i potom obezbeđuje globalno rangiranje stranica na webu (čvorova u grafu). Za pretraživače obezbeđuje rangiranje stranica nezavisno od upita. Glavna pretpostvka ovog algoritma je da je svaka veza od stranice $a$ ka stranici $b$ glas od stranice $a$ za stranicu $b$. Bitno je naglasiti da nije svaki glas jednake težine. Težine dodeljuje PageRank algoritam na osnovu početnog čvora. Iterativna formula za PageRank je sledeća:
 \begin{equation}
 PR_{i+1}(P_i) = \sum\nolimits_{P_j}\frac{PR_i(P_j)}{C(P_j)}
@@ -403,6 +403,18 @@ Potencijalni problemi koji se mogu javiti prilikom primene PageRank algoritma:
 Ovaj primer upravo implementira PageRank algoritam. Izlaz ovog algoritma neće biti predstavljen.
 \inputminted{python}{Codes/2/3-pagerank.py}
 \end{primer}
+\newpage
+\section{Furijeova transformacija}
+Furijeovi koefcijenti funkcije omogućavaju analizu signala u odnosu na frekvencije
+koje su u njemu zastupljene, odnosno spektar signala. Furijeova transformacija omogućava prevođenje reprezentacije funkcije iz vremenskog domena u
+frekvencijski domen. Obrnuto se postiže inverznom Furijeovom transformacijom.
+\begin{figure}[t]
+\includegraphics[width=6cm]{Pictures/fourier.png}
+\centering
+\label{fig:fourier}
+\caption{Ilustracija analize signala uz pomoć Furijeove transformacije.}
+\end{figure}
+
 
 
 \addcontentsline{toc}{section}{Literatura}
