@@ -180,6 +180,14 @@ Test acc: 0.968562874251497
 \textbf{Latentna semantička analiza}\footnote{engl. LSA - latent semantic analysis-LSA} predstavlja način za particionisanje teksta korišćenjem statističkih modela upotrebe reči koji je sličan dekompoziciji sopstvenih vektora i analizi. Umesto da se samo fokusiramo na površne objekte kao što je učestalost reči, ovaj pristup obezbeđuje kvanitativnu meru semantičkih sličnosti među dokumentima baziranom na kontekstu reči. Dve glavne mane su sinonimija i polisemija. Sinonimija se odnosi na različite reči istog ili sličnog značenja. Sa druge strane, polisemija se odnosi na reči koje imaju više različitih značenja. \texttt{LSA} pokušava da razreši ovaj tip problema, bez pomoći rečnika i sredstava na obradu prirodnih jezika, već korišćenjem matematičkih uzoraka koji postoje unutar podataka. To se postiže smanjenjem dimenzije koja se koristi da se dokument predstavi korišćenjem matematičke matrične operacije koja se naziva singularna dekompozicija\footnote{engl. SVD - Singular Value Decomposition}.\\
 
 \textbf{Singularna dekompozicija} razbija bilo koju matricu $A$ na $A=U*S*V'$. Ako bismo bliže pogledali matricu $S$, videli bismo da je $S$ matrica forme, takve, da se sastoji od matrice $D$, koja na dijagonali sadrži sve $\sigma$, koje predstavljaju singularne vrednosti. Broj ovih singularnih vrednosti nam govori o rangu matrice $A$. Možemo pronaći aproksimaciju redukovanog ranga\footnote{engl. \em{truncated SVD} ili \em{LSA}} za $A$ tako što postavimo sve, osim prvih $k$ najvećih singularnih vrednosti na nulu, a potom koristimo samo prvih $k$ kolona matrica $U$ i $V$. Ovaj postupak vršimo kako bismo izvršili \textbf{redukciju dimenzionalnosti}. Suprotno PCA\footnote{engl. PCA - Principal Component Analysis}, ovaj estimator ne centrira podatke pre izračunavanja singularne dekompozicije, što mu omogućava da radi efikasno sa retkim matricama\footnote{Retke matrice su one matrice koje sadrže veliki broj nula.} (dostupnim kroz modul \texttt{scipy.sparse}). Konkretno, truncated SVD radi nad matricama sa brojevima termova\footnote{engl. term count} ili nad $tfidf$ matricama. U kontekstu ovih drugih, postupak je poznat kao latentna semantička analiza.\\
+
+\begin{figure}[t]
+\includegraphics[width=6cm]{Pictures/svd-matrices.png}
+\centering
+\label{fig:pr1}
+\caption{Prikaz dekompozicije matrice.}
+\end{figure}
+
 \begin{primer}
 Ovaj primer vrši klasifikaciju novinskih članaka. Najpre se učitavaju podaci iz fajla \texttt{articles.csv}, u kome su podaci smešteni u obliku $kategorija, tekst$. Kolone koje čine fajl smeštamo u dve promenljive redom, $y$ i $texts$. Nakon toga, vrši se inicijalizacija vektorizatora za kreiranje TF-IDF matrice. Potom se vrši LSA.
 
