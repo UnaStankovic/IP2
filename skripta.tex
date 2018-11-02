@@ -405,17 +405,90 @@ Ovaj primer upravo implementira PageRank algoritam. Izlaz ovog algoritma neće b
 \end{primer}
 \newpage
 \section{Furijeova transformacija}
-Furijeovi koefcijenti funkcije omogućavaju analizu signala u odnosu na frekvencije
-koje su u njemu zastupljene, odnosno spektar signala. Furijeova transformacija omogućava prevođenje reprezentacije funkcije iz vremenskog domena u
-frekvencijski domen. Obrnuto se postiže inverznom Furijeovom transformacijom.
+
+\texttt{Furijeova transformacija} je postupak koji razbija talas (funkciju ili signal) u reprezentaciju opisanu uz pomoć sinusa i kosinusa. Furijeova transformacija pokazuje da bilo koji talas može biti zapisan u vidu sume sinusnih funkcija. Glavna ideja koja stoji iza tehnika istraživanja podataka baziranih na transformacijama je mapiranje originalnih podataka na neki domen koji je lakše analizirati. Jedna od najčešće korišćenih metoda je \texttt{diskretna Furijeova transformacija}\footnote{engl. DFT - Discrete Fourier Transformation}. Ova transformacija prebacuje nisku iz vremenskog u frekvencijski domen, što se postiže odabirom glavnih $K$ frekvencija i predstavljanjem svake od njih kao tačke u $K$-dimenzionom prostoru. Važna osobina diskretne Furijeove transformacije je da se koeficijenti ne menjaju prilikom primene operacije šiftovanja. Glavni problem DFT-a je što gubi lokalizaciju vremena. Furijeovi koefcijenti funkcije omogućavaju analizu signala u odnosu na frekvencije koje su u njemu zastupljene, odnosno spektar signala. Furijeova transformacija omogućava prevođenje reprezentacije funkcije iz vremenskog domena u 
+frekvencijski domen. Obrnuto se postiže inverznom Furijeovom transformacijom. \\
+
+\subparagraph{Primene} Furijeova transformacija se intenzivno koristi u procesiranju signala i spada u najvažnije alate u tom polju. \texttt{Signal} je bilo koja talasna forma (funkcija u zavisnosti od vremena). To može biti bilo šta u stvarnom svetu, elektromagnetni talas, pritisak vazduha koji nastaje dok govorimo, vrednosti akcija na berzi tokom vremena itd. Procesiranje signala, dakle, predstavlja analizu signala kako bi se dobile korisne informacije ili kako bi se signal učinio korisnijim. Kako bi smo bolje razumeli kako se signal može učiniti korisnijim, uzmimo za primer preslušavanje nekog snimka. Dodatno, recimo da se tokom snimka u pozadini čuje niskofrekventni šum. Kada bismo na ovakav signal primenili filter niskih frekvencija, mogli bismo da dobijemo zvuk bez šuma. Drugi primer bio bi ako bismo imali digitalnu fotografiju koja sadrži dosta svetlosnih mrlja, mogli bismo ih određenim filterima ukloniti. \\
+
+\begin{figure}[t]
+\includegraphics[width=6cm]{Pictures/fourier2.png}
+\centering
+\label{fig:fourier2}
+\caption{Ilustracija primene Furijeove transformacije.}
+\end{figure}
+
+
 \begin{figure}[t]
 \includegraphics[width=6cm]{Pictures/fourier.png}
 \centering
 \label{fig:fourier}
-\caption{Ilustracija analize signala uz pomoć Furijeove transformacije.}
+\caption{Ilustracija prevođenja signala iz vremenskog u frekvencijski domen.}
 \end{figure}
 
 
+\subparagraph{Primeri} U primerima koji će biti obrađeni bavićemo se primenom Furijeovih transformacija na EKG i EEG snimcima. \\
+
+\texttt{EKG} ili elektrokardiogram je dijagnostički test koji se koristi u otkrivanju oboljenja srca.EKG predstavlja grafički zapis električnih potencijala srčanog mišića, a njegovo dejstvo se bazira na činjenici da je srce mišić i da kao posledica toga proizvodi električne struje (opet kao posledica metabolizma, bioloških, hemijskih i ostalih procesa u organizmu). Kontrakcijom srčanog mišića proizvodi se slaba električna struja koja se širi telom. Struje srčane aktivnosti mogu se prikupiti, pojačati, pa se preko raznih elektroda i specijalnih aparata registruju i zapisuju u vidu EKG snimka \ref{fig:ecgpaper}.\\\\
+\texttt{EEG} ili elektroencefalografija je metoda kojom se registruje električna aktivnost mozga uz pomoć elektroda postavljenih na površinu glave. Elektroencefalograf je grafički prikaz električne aktivnosti mozga koji se dobija ovim snimanjem i koij lekar tumači i donosi određene zaključke. Mnogi neurološki poremećaji i bolesti zavise od tačne procene moždane funkcije korišćenjem elektroencefalografa. EEG snimci se snimaju nad namerno neispavanim pacijentima i često se koriste pri otkrivanju epilepsije i poremećaja sna.
+
+\begin{figure}[t]
+\includegraphics[width=6cm]{Pictures/Hsignal.png}
+\centering
+\label{fig:hsignal}
+\caption{Ilustracija elemenata signala pri snimanju srca.}
+\end{figure}
+
+\begin{figure}[t]
+\includegraphics[width=8cm]{Pictures/ecg-paper.png}
+\centering
+\label{fig:ecgpaper}
+\caption{Ilustracija EKG snimka.}
+\end{figure}
+
+\begin{figure}[t]
+\includegraphics[width=8cm]{Pictures/eeg.jpg}
+\centering
+\label{fig:eeg}
+\caption{Ilustracija EEG snimka.}
+\end{figure}
+
+\begin{primer}
+Prvi primer bavi se analizom EKG podataka iz fajla \texttt{ecg.txt}.
+Podaci su po linijama dati u formatu (timestamp, amplituda signala). 
+
+\inputminted{python}{Codes/3/ecgscript.py}
+Izlaz iz programa predstavljaju grafici na slikama \ref{fig:ecgF1} i \ref{fig:ecgF2} kao i BPM.
+\begin{lstlisting}
+BPM: 60.019157320989095
+\end{lstlisting}
+\begin{figure}[t]
+\includegraphics[width=10cm]{Codes/3/ecg_Figure_1.png}
+\centering
+\label{fig:ecgF1}
+\caption{Ilustracija EEG snimka.}
+\end{figure}
+\begin{figure}[t]
+\includegraphics[width=10cm]{Codes/3/ecg_Figure_2.png}
+\centering
+\label{fig:ecgF2}
+\caption{Ilustracija EEG snimka.}
+\end{figure}
+
+\end{primer}
+
+%Kako bismo bolje razumeli šta se zapravo dešava posmatrajmo naredni primer.
+%\begin{primer}
+%Posmatrajmo komponentu predstavljenu sinusidalnim talasom sa periodom $T=6.28 *\Pi$ i %amplitudom $0.3$, kao što se vidi na slici \ref{fig:four1}.
+%
+%\begin{figure}[t]
+%\includegraphics[width=6cm]{Pictures/four1.png}
+%\centering
+%\label{fig:four1}
+%\caption{Ilustracija prevođenja signala iz vremenskog u frekvencijski domen.}
+%\end{figure}
+%
+%\end{primer}
 
 \addcontentsline{toc}{section}{Literatura}
 \appendix
