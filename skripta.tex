@@ -35,7 +35,7 @@
 \section{Uvod}
 \label{sec:uvod}
 
-S obzirom na činjenicu da se ovaj kurs direktno nastavlja na kurs Istraživanje podataka 1, kao i da postoji uslovljenost nekim predmetima, podrazumeva se poznavanje osnovnih koncepata. Iako će neki od njih biti ponovno objašnjeni u daljem tekstu, fokus ovog teksta je na novim konceptima. 
+S obzirom na činjenicu da se ovaj kurs direktno nastavlja na kurs Istraživanje podataka 1, kao i da postoji uslovljenost određenim predmetima, podrazumeva se poznavanje osnovnih koncepata. Iako će neki od njih biti ponovno objašnjeni u daljem tekstu, fokus ovog teksta je na novim konceptima. 
 
 \begin{primer}
 Prvi primer služi kao podsetnik na određene mogućnosti koje nam pruža \texttt{pandas} biblioteka.  
@@ -88,18 +88,18 @@ ________________________________________________________________________
 
 \section{Istraživanje Veba - Web Mining}
 \label{sec:veb}
-Kada posmatramo distribuirani sistem informacija, vidimo da su dokumenti i objekti najčešće povezani kako bi se omogućio interaktivni pristup. Glavni primer distribuiranog sistema je Veb, gde korisnici, u potrazi za informacijama, $"$putuju$"$ od objekta do objekta uz pomoć hiperlinkova i \texttt{URL} adresa. Veb konstantno raste i svaki dan se dodaje po nekoliko miliona stranica. Sa ovakvim, neprekidnim, rastom dostupnih stranica i podataka uviđa se da dobijanje informacija iz takvih izvora postaje sve teže i teže. Kao jedan od glavnih problema pri analizi Veb stranica javlja se nedostatak strukture. Pod $"$rudarenjem (istraživanjem) Veba$"$\footnote{engl. web mining} podrazumevamo korišćenje tehnika za $"$rudarenje (istraživanje) podataka$"$\footnote{engl. data mining} kako bi se automatski otkrile i izvlačile informacije sa Veb dokumenata i servisa. Web mining možemo podeliti na četiri glavne celine:
+Kada posmatramo distribuirani sistem informacija, vidimo da su dokumenti i objekti najčešće povezani kako bi se omogućio interaktivni pristup. Glavni primer distribuiranog sistema je Veb, gde korisnici, u potrazi za informacijama, $"$putuju$"$ od objekta do objekta uz pomoć hiperlinkova i \texttt{URL} adresa. Veb konstantno raste i svaki dan se dodaje po nekoliko miliona stranica. Sa ovakvim, neprekidnim, rastom dostupnih stranica i podataka uviđa se da dobijanje informacija iz takvih izvora postaje sve teže i teže. Kao jedan od glavnih problema pri analizi Veb stranica javlja se nedostatak strukture.\\\\Pod $"$rudarenjem (istraživanjem) Veba$"$\footnote{engl. web mining} podrazumevamo korišćenje tehnika za $"$rudarenje (istraživanje) podataka$"$\footnote{engl. data mining} kako bi se automatski otkrile i izvlačile informacije sa Veb dokumenata i servisa. Web mining možemo podeliti na četiri glavne celine:
 \begin{enumerate}
 \item pronalaženje resursa - prikupljanje informacija preko na primer Web stranica kao što su stranice sa vestima i slično,
 \item odabir informacija i pretprocesiranje - različite vrste transformacija nad podacima: uklanjanje stop reči, dobijanje željene reprezentacije i drugo,
-\item generalizacija - proces automatskog otkrivanja uobičajenih uzoraka (engl. \em{pattern}) korišćenjem različitih opštih tehnika mašinskog učenja, istraživanja podataka i raznih veb-orijentisanih metoda i  
+\item generalizacija - proces automatskog otkrivanja uobičajenih uzoraka\footnote{engl. pattern} korišćenjem različitih opštih tehnika mašinskog učenja, istraživanja podataka i raznih veb-orijentisanih metoda i  
 \item analiza - vrši se validacija i/ili interpretacija istraženih uzoraka\footnote{engl.  mined patterns}. 
 \end{enumerate}
 Jedna od mogućih podela istraživanja Veba odnosi se na to koji deo Veba neko želi da analizira. Postoje tri vida istraživanja Veba:
 \begin{enumerate}
-\item Istraživanje sadržaja Veba (engl. \em{Web content mining}) - koristi sadržaj Veb stranice kako bi prikupio podatke: tekst, slike, video ili bilo koji drugi sadržaj,
-\item Istraživanje strukture Veba (engl. \em{Web structure mining}) - fokusira se na strukturu veza veb stranice,
-\item Istraživanje upotrebe Weba (engl. \em{Web usage mining}) - kao podatke koristi podatke prikupljene od interakcija korisnika pri korišćenju interneta.
+\item Istraživanje sadržaja Veba (engl. Web content mining) - koristi sadržaj Veb stranice kako bi prikupio podatke: tekst, slike, video ili bilo koji drugi sadržaj,
+\item Istraživanje strukture Veba (engl. Web structure mining) - fokusira se na strukturu veza veb stranice,
+\item Istraživanje upotrebe Weba (engl. Web usage mining) - kao podatke koristi podatke prikupljene od interakcija korisnika pri korišćenju interneta.
 \end{enumerate}
 
 Najčešća upotreba istraživanja sadržaja Veba je u procesu pretrage. Na primer, crawler-i se koriste od strane pretraživača da izvuku sadržaj Veb strane kako bi se odmah dobili traženi rezultati. Isto tako, oni se mogu koristiti tako da im fokus bude na određenoj temi ili oblasti interesovanja, umesto da zahtevaju sve informacije koje se mogu dostići.\\\\
