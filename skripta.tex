@@ -455,7 +455,9 @@ frekvencijski domen. Obrnuto se postiže inverznom Furijeovom transformacijom. \
 
 \begin{primer}
 Prvi primer bavi se analizom EKG podataka iz fajla \texttt{ecg.txt}.
-Podaci su po linijama dati u formatu (timestamp, amplituda signala). 
+Podaci su po linijama dati u formatu (timestamp, amplituda signala). Nakon što smo prikupili potrebne informacije iz fajla, primenjujemo Furijeovu transformaciju nad vrednostima signala otkucaja srca, odnosno, nad amplitudom (\textit{Y}). Tu vrednost smeštamo u promenljivu \textit{sig\_fft}. Ona nam je potrebna za računanje intenziteta frekvencija.\\
+Osim intenziteta frekvencija, zanima nas i kako izgleda skala frekvencija, kako bismo je dobili koristimo funkciju \textit{fftfreq} iz biblioteke \textbf{fftpack}. Drugi parametar ove funkcije $d$ određuje razmak između uzimanja uzoraka\footnote{engl. sample spacing} i  podrazumevano je 1. Intenzitet i skala frekvencija prikazani su na slici \ref{fig:ecgF1}.\\\\
+Nekada nisu sve informacije koje dobijemo nosioci nama bitnih informacija. Često signal sadrži širi opseg od onog koji želimo da analiziramo. Frekvencije ispod $0.5$Hz nisu normalne frekvencije otkucaja srca, već predstavljaju šum, pa mogu biti uklonjene kako bi se signal $"$ispravio$"$. Ovime se postiže veća tačnost u procenama. \textbf{Filtriranje signala uklanjanjem frekvencija} (niskih ili visokih) je postupak kojim se deo signala odstranjuje sa ciljem dobijanja bolje preciznosti. Nakon što smo izvršili ovaj postupak,  
 
 \inputminted{python}{Codes/3/ecgscript.py}
 Izlaz iz programa predstavljaju grafici na slikama \ref{fig:ecgF1} i \ref{fig:ecgF2} kao i BPM.
@@ -466,13 +468,13 @@ BPM: 60.019157320989095
 \includegraphics[width=10cm]{Codes/3/ecg_Figure_1.png}
 \centering
 \label{fig:ecgF1}
-\caption{Ilustracija EEG snimka.}
+\caption{Prikaz skale i intenziteta frekvencija.}
 \end{figure}
 \begin{figure}[t]
 \includegraphics[width=10cm]{Codes/3/ecg_Figure_2.png}
 \centering
 \label{fig:ecgF2}
-\caption{Ilustracija EEG snimka.}
+\caption{Grafik polaznog i filtriranog signala.}
 \end{figure}
 
 \end{primer}
